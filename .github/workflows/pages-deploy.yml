@@ -1,0 +1,31 @@
+name: Multi-Assets Deploy
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Process Files
+        run: |
+          mkdir -p dist/download
+          
+          zip -r dist/download/lightframe.zip ./lightframe/*
+          
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+
+          sed "s/VERSION_PLACEHOLDER/$TAG_NAME/g" metadata.json > dist/version.json
+
+      - name: Deploy to GH Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          publish_branch: gh-pages
+          force_orphan: true  
