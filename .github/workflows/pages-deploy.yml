@@ -18,7 +18,7 @@ jobs:
           
           zip -r dist/download/lightframe.zip ./lightframe/*
           
-          zip -r dist/download/lightframe.zip ./lightframe/lightframe_x86/*
+          zip -r dist/download/lightframe_x86.zip ./lightframe/lightframe_x86/*
 
           TAG_NAME=${GITHUB_REF#refs/tags/}
 
