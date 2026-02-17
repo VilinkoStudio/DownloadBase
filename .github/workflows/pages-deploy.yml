@@ -14,14 +14,20 @@ jobs:
 
       - name: Process Files
         run: |
+          # 创建输出目录结构
           mkdir -p dist/download
+          mkdir -p dist/res
           
+          # 1. 压缩原本的资源
           zip -r dist/download/lightframe.zip ./lightframe/*
-          
           zip -r dist/download/lightframe_x86.zip ./lightframe/lightframe_x86/*
 
-          TAG_NAME=${GITHUB_REF#refs/tags/}
+          # 2. 【新增】直接移动 res 文件夹内容，不进行压缩
+          # 使用 cp -r 将根目录 res/ 下的所有内容拷贝到 dist/res/ 中
+          cp -r ./res/. ./dist/res/
 
+          # 3. 处理版本元数据
+          TAG_NAME=${GITHUB_REF#refs/tags/}
           sed "s/VERSION_PLACEHOLDER/$TAG_NAME/g" metadata.json > dist/version.json
 
       - name: Deploy to GH Pages
@@ -30,4 +36,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-          force_orphan: true  
+          force_orphan: true

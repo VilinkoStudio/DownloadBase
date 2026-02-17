@@ -1,0 +1,90 @@
+release "v0.5.1.4" build=514 date="2024-02-10" {
+    feat "正式加入物品栏"
+    change "更新了部分细节UI"
+}
+
+release "v0.4.5.1" build=451 date="2023-05-27" {
+    feat "新的滑动条和便签纸文本编辑交互"
+    feat "在便签纸多行文本溢出时,显示滚动条"
+    fix "其他小改动和bug修复"
+}
+
+release "v0.4.0.01" build=401 date="2023-01-02" {
+    fix "修复箱子的长目录缓存问题"
+}
+
+release "v0.4.0" build=395 date="2023-01-01" {
+    feat "全新的界面!新的体验"
+    feat "重写的时钟组件 可用性更强!"
+    change "日历本的小更新"
+    feat "独立的MC箱子 用来当文件夹也可以~"
+    change "部分操作微调 更易用~"
+}
+
+release "v0.3.1" build=310 date="2022-09-10" {
+    fix "修复部分隐式崩溃"
+}
+
+release "Anniversary" build=300 date="2022-08-28" {
+    feat "主页更新!横幅与小贴纸~"
+    feat "专注空间大更新!倒计时器&待办清单"
+    feat "事件检查器支持卡片添加"
+    fix "其他小改动和bug修复"
+}
+
+release "v0.2.4" build=240 date="2022-08-11" {
+    change "状态描述&组件切割"
+    change "其他小改动"
+}
+
+release "v0.2.0" build=200 date="2022-07-01" {
+    feat "VertexUI-Twinkle轻卡片"
+    change "组件体验优化"
+    feat "LimpidDesign设计引入"
+    change "其他小改动"
+}
+
+release "Beta3" build=105 date="2022-03-05" {
+    fix "新的UI和crash修复"
+    feat "新的发生器"
+    feat "在线更新"
+}
+
+release "Beta2" build=90 date="2022-01-18" {
+    feat "粒子发生器"
+    feat "专注空间Beta / 组件分析"
+    change "(U1)使用VertexUI最新草案"
+}
+
+release "Beta2" build=75 date="2021-12-22" {
+    feat "加入便签纸、文本贴纸、时钟"
+    fix "新的主题组件,修复bug若干"
+    feat "(U1)加入物品栏扩展选项"
+}
+
+release "Beta2" build=54 date="2021-11-21" {
+    feat "加入ListPanel的进入动画"
+    change "使用绘制缓存,大幅度提高绘制效率"
+}
+
+release "Beta2" build=53 date="2021-11-21" {
+    feat "新的推入动画"
+    feat "加入ListPanel(表列面板)"
+    feat "部分加入控件动画"
+}
+
+release "Beta2" build=52 date="2021-11-14" {
+    feat "新的UI"
+    change "Minecraft主题框改为主题组件"
+    feat "物品栏Dock(未正式加入,仅测试)"
+}
+
+release "Beta2" build=51 date="2021-11-07" {
+    feat "加入启动选项"
+    fix "修复日期框闪烁的bug"
+}
+
+release "Beta1" build=50 date="2021-10-30" {
+    feat "首个对外发布版本!"
+    feat "加入Minecraft主题框"
+}
