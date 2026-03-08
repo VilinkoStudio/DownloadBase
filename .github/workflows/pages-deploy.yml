@@ -29,7 +29,7 @@ jobs:
 
           # 3. 处理版本元数据
           TAG_NAME=${GITHUB_REF#refs/tags/}
-          sed "s/VERSION_PLACEHOLDER/$TAG_NAME/g" metadata.json > dist/version.json
+          sed "s|VERSION_PLACEHOLDER|$TAG_NAME|g" metadata.json > dist/version.json
 
       - name: Deploy to GH Pages
         uses: peaceiris/actions-gh-pages@v3
