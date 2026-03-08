@@ -2,8 +2,8 @@ name: Multi-Assets Deploy
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs:
   deploy:
@@ -20,6 +20,7 @@ jobs:
           
           # 1. 压缩原本的资源
           zip -r dist/download/lightframe.zip ./lightframe/*
+          zip -r dist/download/pogget.zip ./pogget/*
           zip -r dist/download/lightframe_x86.zip ./lightframe/lightframe_x86/*
 
           # 2. 【新增】直接移动 res 文件夹内容，不进行压缩
