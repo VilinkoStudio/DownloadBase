@@ -27,6 +27,8 @@ jobs:
           # 2. 【新增】直接移动 res 文件夹内容，不进行压缩
           # 使用 cp -r 将根目录 res/ 下的所有内容拷贝到 dist/res/ 中
           cp -r ./res/. ./dist/res/
+          cp ./CNAME ./dist/
+          cp ./404.html ./dist/
 
           # 3. 处理版本元数据
           TAG_NAME=${GITHUB_REF#refs/tags/}
