@@ -1,4 +1,4 @@
-name: Multi-Assets Deploy
+name: Multi-Assets Deploy (Windows)
 
 on:
   push:
@@ -7,33 +7,50 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Process Files
+      - name: Process Files and Build MSI
+        shell: pwsh # 明确指定使用 PowerShell
         run: |
-          # 创建输出目录结构
-          mkdir -p dist/download
-          mkdir -p dist/res
+          # 1. 创建输出目录结构
+          New-Item -ItemType Directory -Force -Path dist\download
+          New-Item -ItemType Directory -Force -Path dist\res
+
+          # 2. 压缩原本的资源
+          # Windows 环境下推荐直接使用预装的 7z，速度快且通配符支持好
+          7z a -tzip dist\download\lightframe.zip .\lightframe\*
+          7z a -tzip dist\download\pogget.zip .\pogget\*
+          7z a -tzip dist\download\pogget_arm64.zip .\pogget_arm64\*
+          7z a -tzip dist\download\lightframe_x86.zip .\lightframe\lightframe_x86\*
+
+          # 3. 保留静态页面必需文件 (忽略报错以防文件不存在)
+          Copy-Item -Path .\CNAME -Destination .\dist\ -ErrorAction SilentlyContinue
+          Copy-Item -Path .\404.html -Destination .\dist\ -ErrorAction SilentlyContinue
+
+          # ==========================================
+          # 4. 【修改部分】使用 WiX Toolset 直接将现成的 exe 打包成 MSI
+          # ==========================================
+          # 将 WiX 的 bin 目录临时加入环境变量
+          $env:Path += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
+
+          # 编译 wxs 文件 (假设你的 WiX 配置文件名为 Setup.wxs)
+          # -arch x64 表示打包 64 位安装包，如果是 32 位请改为 x86
+          candle.exe Setup.wxs -arch x64
+
+          # 链接生成 msi 文件，并输出到 download 目录
+          # -ext WixUIExtension 用于引入默认的安装向导界面
+          light.exe Setup.wixobj -ext WixUIExtension -out dist\download\Pogget_Setup.msi
+
+          # 5. 处理版本元数据
+          # PowerShell 替换字符串的方式与 sed 不同
+          $tagName = $env:GITHUB_REF -replace '^refs/tags/', ''
+          # 防错：如果是 push 到 main 而不是打 tag 触发的，给个默认值
+          if ($tagName -match '^refs/heads/') { $tagName = "latest" } 
           
-          # 1. 压缩原本的资源
-          zip -r dist/download/lightframe.zip ./lightframe/*
-          zip -r dist/download/pogget.zip ./pogget/*
-          zip -r dist/download/pogget_arm64.zip ./pogget_arm64/*
-          zip -r dist/download/lightframe_x86.zip ./lightframe/lightframe_x86/*
-
-          # 2. 【新增】直接移动 res 文件夹内容，不进行压缩
-          # 使用 cp -r 将根目录 res/ 下的所有内容拷贝到 dist/res/ 中
-          cp -r ./res/. ./dist/res/
-          cp ./CNAME ./dist/
-          cp ./404.html ./dist/
-          cp ./pogget/Pogget.exe dist/download/pogget.exe
-
-          # 3. 处理版本元数据
-          TAG_NAME=${GITHUB_REF#refs/tags/}
-          sed "s|VERSION_PLACEHOLDER|$TAG_NAME|g" metadata.json > dist/version.json
+          (Get-Content metadata.json) -replace 'VERSION_PLACEHOLDER', $tagName | Set-Content dist\version.json
 
       - name: Deploy to GH Pages
         uses: peaceiris/actions-gh-pages@v3
