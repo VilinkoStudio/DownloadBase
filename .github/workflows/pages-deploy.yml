@@ -23,6 +23,7 @@ jobs:
           zip -r dist/download/pogget.zip ./pogget/*
           zip -r dist/download/pogget_arm64.zip ./pogget_arm64/*
           zip -r dist/download/lightframe_x86.zip ./lightframe/lightframe_x86/*
+          cp dist/download/pogget.exe ./pogget/Pogget.exe
 
           # 2. 【新增】直接移动 res 文件夹内容，不进行压缩
           # 使用 cp -r 将根目录 res/ 下的所有内容拷贝到 dist/res/ 中
