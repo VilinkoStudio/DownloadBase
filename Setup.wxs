@@ -9,7 +9,7 @@
 
     <UIRef Id="WixUI_Minimal" />
     
-    <WixVariable Id="WixUILicenseRtf" Overridable="yes" Value="" />
+    <WixVariable Id="WixUILicenseRtf" Overridable="yes" Value="License.rtf" />
 
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFiles64Folder">
