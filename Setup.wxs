@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  
+  <Product Id="*" Name="Pogget" Language="2052" Version="1.0.0.0" Manufacturer="CimiMoly" UpgradeCode="B5C3D4A1-E5F6-4789-B123-C4D5E6F7A8B9">
+    
+    <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="CimiMoly" Description="Pogget Installer" />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <UIRef Id="WixUI_Minimal" />
+    
+    <WixVariable Id="WixUILicenseRtf" Overridable="yes" Value="" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFiles64Folder">
+        <Directory Id="INSTALLFOLDER" Name="Pogget" />
+      </Directory>
+      
+      <Directory Id="ProgramMenuFolder">
+        <Directory Id="ApplicationProgramsFolder" Name="Pogget"/>
+      </Directory>
+      
+      <Directory Id="DesktopFolder" Name="Desktop" />
+    </Directory>
+
+    <DirectoryRef Id="INSTALLFOLDER">
+      <Component Id="MainExecutable" Guid="*">
+        <File Id="PoggetEXE" Source="pogget\Pogget.exe" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="ApplicationProgramsFolder">
+      <Component Id="ApplicationShortcut" Guid="*">
+        <Shortcut Id="ApplicationStartMenuShortcut" 
+                  Name="Pogget" 
+                  Description="轻量强大的文件交互管理工具" 
+                  Target="[#PoggetEXE]" 
+                  WorkingDirectory="INSTALLFOLDER" />
+        <RemoveFolder Id="CleanUpShortCut" Directory="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\Vilinko\Pogget" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="DesktopFolder">
+      <Component Id="DesktopShortcutComp" Guid="*">
+        <Shortcut Id="AppDesktopShortcut" 
+                  Name="Pogget" 
+                  Description="轻量强大的文件交互管理工具" 
+                  Target="[#PoggetEXE]" 
+                  WorkingDirectory="INSTALLFOLDER" />
+        <RegistryValue Root="HKCU" Key="Software\Vilinko\Pogget" Name="desktop" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <Feature Id="ProductFeature" Title="Pogget Core" Level="1">
+      <ComponentRef Id="MainExecutable" />
+      <ComponentRef Id="ApplicationShortcut" />
+      <ComponentRef Id="DesktopShortcutComp" />
+    </Feature>
+
+  </Product>
+</Wix>
