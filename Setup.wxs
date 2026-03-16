@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
   
-  <Product Id="*" Name="Pogget" Language="2052" Version="1.0.0.0" Manufacturer="CimiMoly" UpgradeCode="B5C3D4A1-E5F6-4789-B123-C4D5E6F7A8B9">
+<Product Id="*" Name="Pogget" Language="2052" Codepage="936" Version="1.0.0.0" Manufacturer="CimiMoly" UpgradeCode="...">
     
     <Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" Manufacturer="CimiMoly" Description="Pogget Installer" />
 
