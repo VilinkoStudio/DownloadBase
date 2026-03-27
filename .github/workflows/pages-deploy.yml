@@ -26,6 +26,11 @@ jobs:
           7z a -tzip dist\download\pogget_arm64.zip .\pogget_arm64\*
           7z a -tzip dist\download\lightframe_x86.zip .\lightframe\lightframe_x86\*
 
+          # --- 新增步骤：把当前目录 res/ 下的所有东西 copy 到目标的 /res 目录下 ---
+          if (Test-Path .\res\*) {
+              Copy-Item -Path .\res\* -Destination .\dist\res\ -Recurse -Force
+          }
+
           # 3. 保留静态页面必需文件 (忽略报错以防文件不存在)
           Copy-Item -Path .\CNAME -Destination .\dist\ -ErrorAction SilentlyContinue
           Copy-Item -Path .\404.html -Destination .\dist\ -ErrorAction SilentlyContinue
@@ -37,15 +42,12 @@ jobs:
           $env:Path += ";C:\Program Files (x86)\WiX Toolset v3.11\bin"
 
           # 编译 wxs 文件 (假设你的 WiX 配置文件名为 Setup.wxs)
-          # -arch x64 表示打包 64 位安装包，如果是 32 位请改为 x86
           candle.exe Setup.wxs -arch x64
 
           # 链接生成 msi 文件，并输出到 download 目录
-          # -ext WixUIExtension 用于引入默认的安装向导界面
           light.exe Setup.wixobj -ext WixUIExtension -out dist\download\Pogget_Setup.msi
 
           # 5. 处理版本元数据
-          # PowerShell 替换字符串的方式与 sed 不同
           $tagName = $env:GITHUB_REF -replace '^refs/tags/', ''
           # 防错：如果是 push 到 main 而不是打 tag 触发的，给个默认值
           if ($tagName -match '^refs/heads/') { $tagName = "latest" } 
