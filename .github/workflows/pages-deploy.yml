@@ -25,6 +25,8 @@ jobs:
           7z a -tzip dist\download\pogget.zip .\pogget\*
           7z a -tzip dist\download\pogget_arm64.zip .\pogget_arm64\*
           7z a -tzip dist\download\lightframe_x86.zip .\lightframe\lightframe_x86\*
+          # --- 添加 PDB 打包代码 ---
+          7z a -tzip dist\download\pogget_pdb.zip .\pogget_pdb\*
 
           # --- 新增步骤：把当前目录 res/ 下的所有东西 copy 到目标的 /res 目录下 ---
           if (Test-Path .\res\*) {
