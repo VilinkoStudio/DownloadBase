@@ -49,6 +49,23 @@ jobs:
           # 链接生成 msi 文件，并输出到 download 目录
           light.exe Setup.wixobj -ext WixUIExtension -out dist\download\Pogget_Setup.msi
 
+          # ==========================================
+          # 新增：MSIX 构建步骤
+          # ==========================================
+          # 准备 MSIX 打包工作目录
+          New-Item -ItemType Directory -Force -Path msix_build
+          
+          # 拷贝编译好的程序文件和 Assets 到打包目录
+          # 假设你的程序文件在 ./pogget 目录下，Assets 在 ./msix/Assets
+          Copy-Item -Path .\pogget\* -Destination .\msix_build\ -Recurse -Force
+          Copy-Item -Path .\msix\AppxManifest.xml -Destination .\msix_build\ -Force
+          if (Test-Path .\msix\Assets) {
+              Copy-Item -Path .\msix\Assets -Destination .\msix_build\ -Recurse -Force
+          }
+
+          # 使用 MakeAppx 打包 (Windows SDK 路径在 GitHub Runner 默认已包含)
+          & "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\makeappx.exe" pack /d .\msix_build /p dist\download\Pogget.msix /o
+
           # 5. 处理版本元数据
           $tagName = $env:GITHUB_REF -replace '^refs/tags/', ''
           # 防错：如果是 push 到 main 而不是打 tag 触发的，给个默认值
