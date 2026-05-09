@@ -63,8 +63,11 @@ jobs:
               Copy-Item -Path .\msix\Assets -Destination .\msix_build\ -Recurse -Force
           }
 
-          # 使用 MakeAppx 打包 (Windows SDK 路径在 GitHub Runner 默认已包含)
-          & "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22621.0\x64\makeappx.exe" pack /d .\msix_build /p dist\download\Pogget.msix /o
+          $sdkPath = (Get-ChildItem "C:\Program Files (x86)\Windows Kits\10\bin\10.*" | Sort-Object Name -Descending | Select-Object -First 1).FullName
+          $makeAppx = Join-Path $sdkPath "x64\makeappx.exe"
+          Write-Host "Using MakeAppx at: $makeAppx"
+
+          & $makeAppx pack /d .\msix_build /p dist\download\Pogget.msix /o
 
           # 5. 处理版本元数据
           $tagName = $env:GITHUB_REF -replace '^refs/tags/', ''
