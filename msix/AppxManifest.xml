@@ -9,7 +9,7 @@
   <Identity
     Name="CimiMoly.Pogget"
     Publisher="CN=4D53342A-8ACE-4F54-9267-33944862B3B7"
-    Version="0.7.50.0" />
+    Version="0.1.0.00" />
 
   <Properties>
     <DisplayName>Pogget</DisplayName>
